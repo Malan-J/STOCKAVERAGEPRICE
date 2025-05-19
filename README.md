@@ -18,4 +18,4 @@ It also displays total shares and total amount invested.
 To get a local copy of this project, run:
 
 
-git clone https://github.com
+git clone https://github.com/Malan-J/STOCKAVERAGEPRICE.git
