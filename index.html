@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stock Average Price Calculator</title>
+  <style>
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(-45deg, #ff6f91, #845ec2, #00c9a7, #ffc75f, #f9f871);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 20px;
+      padding: 40px 50px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+      max-width: 650px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 2.4rem;
+      letter-spacing: 1.5px;
+      text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 20px;
+      margin-bottom: 30px;
+    }
+
+    th {
+      font-weight: 700;
+      font-size: 14px;
+      color: #ffd369;
+      text-transform: uppercase;
+      padding-bottom: 10px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    }
+
+    td {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 14px 10px;
+      box-shadow: inset 0 3px 7px rgba(255, 255, 255, 0.2);
+    }
+
+    input[type='number'] {
+      width: 100%;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: left;
+      background: transparent;
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+      appearance: textfield;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: linear-gradient(45deg, #ff6f91, #ff9671);
+      color: #fff;
+      border: none;
+      padding: 16px 40px;
+      font-size: 20px;
+      font-weight: 700;
+      border-radius: 35px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 111, 145, 0.6);
+      transition: background 0.4s ease, transform 0.2s ease;
+      font-family: inherit;
+    }
+
+    button:hover {
+      background: linear-gradient(45deg, #ff577f, #ff6f61);
+      transform: scale(1.08);
+      box-shadow: 0 10px 25px rgba(255, 87, 127, 0.7);
+    }
+
+    button:active {
+      transform: scale(0.95);
+      box-shadow: 0 6px 15px rgba(255, 87, 127, 0.5);
+    }
+
+    .result {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-top: 20px;
+      color: #ffe291;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    #averagePrice {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #ffd369;
+      margin-top: 30px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+      letter-spacing: 1.2px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+      h2 {
+        font-size: 1.8rem;
+      }
+      button {
+        padding: 14px 28px;
+        font-size: 18px;
+      }
+      #averagePrice {
+        font-size: 2.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Stock Average Price Calculator</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Initial Quantity</th>
+          <th>Initial Rate</th>
+          <th>New Quantity</th>
+          <th>New Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="number" id="initialQty" step="any" min="0" required /></td>
+          <td><input type="number" id="initialRate" step="any" min="0" required /></td>
+          <td><input type="number" id="newQty" step="any" min="0" required /></td>
+          <td><input type="number" id="newRate" step="any" min="0" required /></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="btn-group">
+      <button onclick="calculateAverage()">Calculate Average Price</button>
+      <button onclick="clearForm()">Clear</button>
+    </div>
+    <h3>Average Price: <span id="averagePrice">-</span></h3>
+    <div class="result" id="totalShares"></div>
+    <div class="result" id="totalAmount"></div>
+  </div>
+
+  <script>
+    function calculateAverage() {
+      const initialQty = parseFloat(document.getElementById('initialQty').value);
+      const initialRate = parseFloat(document.getElementById('initialRate').value);
+      const newQty = parseFloat(document.getElementById('newQty').value);
+      const newRate = parseFloat(document.getElementById('newRate').value);
+
+      if (
+        isNaN(initialQty) || isNaN(initialRate) ||
+        isNaN(newQty) || isNaN(newRate)
+      ) {
+        alert('Please enter valid numbers in all fields.');
+        return;
+      }
+
+      if (initialQty <= 0 || newQty <= 0) {
+        alert('Quantities must be greater than zero.');
+        return;
+      }
+
+      const totalQty = initialQty + newQty;
+      const totalCost = (initialQty * initialRate) + (newQty * newRate);
+      const avgPrice = totalCost / totalQty;
+
+      document.getElementById('averagePrice').innerText = avgPrice.toFixed(2);
+      document.getElementById('totalShares').innerText = `Total Shares: ${totalQty}`;
+      document.getElementById('totalAmount').innerText = `Total Amount: ₹${totalCost.toFixed(2)}`;
+    }
+
+    function clearForm() {
+      document.getElementById('initialQty').value = '';
+      document.getElementById('initialRate').value = '';
+      document.getElementById('newQty').value = '';
+      document.getElementById('newRate').value = '';
+      document.getElementById('averagePrice').innerText = '-';
+      document.getElementById('totalShares').innerText = '';
+      document.getElementById('totalAmount').innerText = '';
+    }
+  </script>
+</body>
+</html>
