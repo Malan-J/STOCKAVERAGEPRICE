@@ -19,3 +19,7 @@ To get a local copy of this project, run:
 
 
 git clone https://github.com/Malan-J/STOCKAVERAGEPRICE.git
+
+## website link
+open the below link in the browser:
+  https://malan-j.github.io/STOCKAVERAGEPRICE/
